@@ -1,6 +1,9 @@
 build/
 *.gcda
 utensor-model/
+edge-impulse-sdk/
+model-parameters/
+tflite-model/
 deploy.zip
 LSM303AGR/
 mbed-os/
