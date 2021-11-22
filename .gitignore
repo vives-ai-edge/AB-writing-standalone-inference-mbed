@@ -1,7 +1,6 @@
 build/
 *.gcda
 utensor-model/
-edge-impulse-sdk/
 deploy.zip
 LSM303AGR/
 mbed-os/
