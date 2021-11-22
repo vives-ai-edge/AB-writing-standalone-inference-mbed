@@ -1,0 +1,17 @@
+{
+    "config": {
+        "usb_speed": {
+            "help": "USE_USB_FS",
+            "value": "USE_USB_FS"
+        }
+    },
+    "target_overrides": {
+        "*": {
+            "target.device_has_add": ["USBDEVICE"],
+            "platform.stdio-baud-rate" : 115200,
+            "platform.stdio-convert-newlines": true,
+            "rtos.main-thread-stack-size": "(8*1024)",
+            "target.printf_lib": "std"
+        }
+    }
+}
