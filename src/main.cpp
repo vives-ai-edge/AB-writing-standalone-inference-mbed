@@ -16,16 +16,16 @@ volatile bool trig = 0;
 Ticker timer;
 uint8_t id;
 
-static float features[EI_CLASSIFIER_NN_INPUT_FRAME_SIZE]; /* = {
-    // copy raw features here (for example from the 'Live classification' page)
-    -744, -233, -627, -802, -268, -631, -861, -256, -596, -873, -225, -529, -904, -194, -557, -873, -178, -533, -841, -241, -522, -884, -229, -537, -904, -178, -487, -927, -186, -483, -947, -112, -420, -939, -85, -436, -857, -108, -498, -857, -194, -545, -865, -229, -479, -892, -202, -475, -916, -124, -502, -916, -116, -487, -912, -143, -459, -927, -175, -424, -873, -178, -440, -841, -175, -506, -818, -210, -553, -826, -237, -553, -830, -198, -553, -857, -171, -557, -931, -151, -518, -1013, -89, -459, -1017, -128, -448, -900, -186, -568, -916, -163, -490, -919, -175, -401, -931, -202, -444, -904, -331, -494, -923, -416, -459, -951, -206, -529, -935, -132, -721, -974, -206, -658, -986, 23, -740, -802, 398, -553, -1005, -61, -214, -935, -69, -303, -1064, -7, -241, -947, -108, -264, -982, -288, -362, -955, -19, -432, -982, -256, -526, -1048, -260, -124, -1048, -143, -38, -1060, -143, -38, -884, -136, -451, -783, -73, -701, -713, -128, -763, -701, -342, -756, -662, -537, -775, -650, -448, -682, -724, -385, -724, -1212, -136, -206, -900, -432, -514, -880, -108, -346, -970, -120, -327, -877, -42, -346, -896, -151, -514, -752, -194, -502, -791, -377, -623, -884, -444, -604, -986, -397, -799, -1001, -358, -802, -619, -225, -370, -545, -202, -451, -1196, -108, -455, -830, -81, -424, -1005, 23, -545, -1056, -11, -580, -1036, 59, -381, -951, 43, -194, -966, 20, -178, -1033, 121, -393, -1099, 234, -689, -1302, 31, -334, -1040, -373, -171, -810, -553, -494, -635, -334, -658, -682, -97, -736, -717, -171, -763, -670, -299, -748, -689, -362, -697, -643, -366, -705, -693, -342, -721, -670, -315, -658, -744, -268, -635, -838, -237, -584, -916, -175, -479, -970, -147, -463, -1001, -120, -420, -955, -132, -385, -927, -147, -416, -939, -69, -393, -939, -93, -451
-    // see https://docs.edgeimpulse.com/docs/running-your-impulse-mbed
-};*/
+// static float features[EI_CLASSIFIER_NN_INPUT_FRAME_SIZE]; /* = {
+//     // copy raw features here (for example from the 'Live classification' page)
+//     -744, -233, -627, -802, -268, -631, -861, -256, -596, -873, -225, -529, -904, -194, -557, -873, -178, -533, -841, -241, -522, -884, -229, -537, -904, -178, -487, -927, -186, -483, -947, -112, -420, -939, -85, -436, -857, -108, -498, -857, -194, -545, -865, -229, -479, -892, -202, -475, -916, -124, -502, -916, -116, -487, -912, -143, -459, -927, -175, -424, -873, -178, -440, -841, -175, -506, -818, -210, -553, -826, -237, -553, -830, -198, -553, -857, -171, -557, -931, -151, -518, -1013, -89, -459, -1017, -128, -448, -900, -186, -568, -916, -163, -490, -919, -175, -401, -931, -202, -444, -904, -331, -494, -923, -416, -459, -951, -206, -529, -935, -132, -721, -974, -206, -658, -986, 23, -740, -802, 398, -553, -1005, -61, -214, -935, -69, -303, -1064, -7, -241, -947, -108, -264, -982, -288, -362, -955, -19, -432, -982, -256, -526, -1048, -260, -124, -1048, -143, -38, -1060, -143, -38, -884, -136, -451, -783, -73, -701, -713, -128, -763, -701, -342, -756, -662, -537, -775, -650, -448, -682, -724, -385, -724, -1212, -136, -206, -900, -432, -514, -880, -108, -346, -970, -120, -327, -877, -42, -346, -896, -151, -514, -752, -194, -502, -791, -377, -623, -884, -444, -604, -986, -397, -799, -1001, -358, -802, -619, -225, -370, -545, -202, -451, -1196, -108, -455, -830, -81, -424, -1005, 23, -545, -1056, -11, -580, -1036, 59, -381, -951, 43, -194, -966, 20, -178, -1033, 121, -393, -1099, 234, -689, -1302, 31, -334, -1040, -373, -171, -810, -553, -494, -635, -334, -658, -682, -97, -736, -717, -171, -763, -670, -299, -748, -689, -362, -697, -643, -366, -705, -693, -342, -721, -670, -315, -658, -744, -268, -635, -838, -237, -584, -916, -175, -479, -970, -147, -463, -1001, -120, -420, -955, -132, -385, -927, -147, -416, -939, -69, -393, -939, -93, -451
+//     // see https://docs.edgeimpulse.com/docs/running-your-impulse-mbed
+// };*/
 
-int raw_feature_get_data(size_t offset, size_t length, float *out_ptr) {
-    memcpy(out_ptr, features + offset, length * sizeof(float));
-    return 0;
-}
+// int raw_feature_get_data(size_t offset, size_t length, float *out_ptr) {
+//     memcpy(out_ptr, features + offset, length * sizeof(float));
+//     return 0;
+// }
 
 void sample(){
     trig=1;
@@ -43,38 +43,51 @@ int main() {
     accelerometer.get_x_axes(axes);
     ser.printf("LSM303AGR [acc/mg]:      %6ld, %6ld, %6ld\r\n", axes[0], axes[1], axes[2]);
     
+    ThisThread::sleep_for(100ms);
+
     timer.attach_us(&sample,int(EI_CLASSIFIER_INTERVAL_MS*1000));
+
+    float buffer[EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE] = { 0 };
+
+    ThisThread::sleep_for(100ms);
     
     while (1) {
         led = 0;
         int nsamples = 0;
-        while(nsamples<EI_CLASSIFIER_NN_INPUT_FRAME_SIZE){
+        while(nsamples<EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE){
             
             while (!trig){}
             trig = 0;
             accelerometer.get_x_axes(axes);
-            features[nsamples] = (float)axes[0];
-            features[nsamples+1] = (float)axes[1];
-            features[nsamples+2] = (float)axes[2];
+            buffer[nsamples] = (float)axes[0];
+            buffer[nsamples+1] = (float)axes[1];
+            buffer[nsamples+2] = (float)axes[2];
             nsamples+=3;
         }
-        
-        
-        if (sizeof(features) / sizeof(float) != EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE) {
-            ser.printf("The size of your 'features' array is not correct. Expected %d items, but had %u\n",
-                EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE, sizeof(features) / sizeof(float));
+
+        // Turn the raw buffer in a signal which we can the classify
+        signal_t signal;
+        int err = numpy::signal_from_buffer(buffer, EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE, &signal);
+        if (err != 0) {
+            ei_printf("Failed to create signal from buffer (%d)\n", err);
             return 1;
         }
+        
+        // if (sizeof(features) / sizeof(float) != EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE) {
+        //     ser.printf("The size of your 'features' array is not correct. Expected %d items, but had %u\n",
+        //         EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE, sizeof(features) / sizeof(float));
+        //     return 1;
+        // }
 
         ei_impulse_result_t result = { 0 };
         
         // the features are stored into flash, and we don't want to load everything into RAM
-        signal_t features_signal;
-        features_signal.total_length = sizeof(features) / sizeof(features[0]);
-        features_signal.get_data = &raw_feature_get_data;
+        // signal_t features_signal;
+        // features_signal.total_length = sizeof(features) / sizeof(features[0]);
+        // features_signal.get_data = &raw_feature_get_data;
 
         // invoke the impulse
-        EI_IMPULSE_ERROR res = run_classifier(&features_signal, &result, true);
+        EI_IMPULSE_ERROR res = run_classifier(&signal, &result, true);
         ser.printf("run_classifier returned: %d\n", res);
 
         if (res != 0) return 1;
